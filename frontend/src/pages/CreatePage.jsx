@@ -1,5 +1,5 @@
 import { Container, Heading, VStack, Box, useColorModeValue,Input, Button } from '@chakra-ui/react'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
 const CreatePage = () => {
     const[newProduct, setNewProduct] = useState({
@@ -8,9 +8,34 @@ const CreatePage = () => {
         image: '',
     })
 
-    const handleAddProduct = async() => {
+    const handleAddProduct = async(e) => {
+        e.preventDefault();
+
+        try{
+            const response = await fetch('http://localhost:5000/api/products', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(newProduct)  // Send data as JSON
+            });
+
+            if(!response.ok){
+                throw new Error(`Please fill the fields: ${response.status}`);
+            }
+
+            const data = await response.json();
+            console.log("Product added successfully:", data);
+            
+        } catch(error){
+            console.error('Failed to add product. Please try again:', error);
+        }
     }
 
+
+useEffect(() => {
+    handleAddProduct();
+})
 
     return (
         <Container maxW={"container.sm"}>
