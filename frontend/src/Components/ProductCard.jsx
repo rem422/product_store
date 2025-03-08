@@ -1,11 +1,22 @@
-import React from 'react'
+import React, { useEffect, useState } from "react";
 import { Box, Heading, Text, Image, HStack, IconButton, useColorModeValue } from '@chakra-ui/react'
 import { FaEdit } from "react-icons/fa";
 import { RiDeleteBinLine } from "react-icons/ri";
 
 const ProductCard = ({name, price, image}) => {
   const textColor = useColorModeValue('gray.600', 'gray.200');;
-  const bg = useColorModeValue('white', 'gray.800');;
+  const bg = useColorModeValue('white', 'gray.800');
+  // const [products, setProducts] = useState([]);
+
+const handleDelete = async (id) => {
+  const response = await fetch(`http://localhost:5000/api/products/${id}`, {
+    method: "DELETE"
+  })
+  
+}
+
+
+
 
   return (
     <Box
