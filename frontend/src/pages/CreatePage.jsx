@@ -32,7 +32,6 @@ const CreatePage = () => {
         }
     }
 
-
 useEffect(() => {
     handleAddProduct();
 })
