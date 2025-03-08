@@ -21,6 +21,8 @@ export default [
       'react-refresh': reactRefresh,
     },
     rules: {
+      'react/prop-types': 'off',
+      'react/jsx-filename-extension': ['error', { extensions: ['.js', '.jsx'] }],
       ...js.configs.recommended.rules,
       ...reactHooks.configs.recommended.rules,
       'no-unused-vars': ['error', { varsIgnorePattern: '^[A-Z_]' }],

@@ -1,4 +1,4 @@
-import { Container, Heading, VStack, Box, useColorModeValue,Input, Button } from '@chakra-ui/react'
+import { Container, Heading, VStack, Box, useColorModeValue,Input, Button, useToast } from '@chakra-ui/react'
 import { useState, useEffect } from 'react'
 
 const CreatePage = () => {
@@ -8,8 +8,28 @@ const CreatePage = () => {
         image: '',
     })
 
+    const toast = useToast();
+    
     const handleAddProduct = async(e) => {
         e.preventDefault();
+
+        if (!newProduct.name ||!newProduct.price ||!newProduct.image) {
+            toast({
+                title: "Error",
+                description: "Please fill all fields",
+                status: "error",
+                duration: 3000,
+                isClosable: true,
+            });
+        } else {
+            toast({
+                title: "Success",
+                description: "Product Created successfully",
+                status: "success",
+                duration: 5000,
+                isClosable: true,
+            });
+        }
 
         try{
             const response = await fetch('http://localhost:5000/api/products', {
@@ -20,13 +40,14 @@ const CreatePage = () => {
                 body: JSON.stringify(newProduct)  // Send data as JSON
             });
 
-            if(!response.ok){
-                throw new Error(`Please fill the fields: ${response.status}`);
+            if(!response.ok || !newProduct.name || !newProduct.price || !newProduct.image ) {
+                throw new Error(`${response.status}`);
+                // return { success: false, message: "Please fill all fields" };
             }
 
             const data = await response.json();
             console.log("Product added successfully:", data);
-            
+
         } catch(error){
             console.error('Failed to add product. Please try again:', error);
         }
